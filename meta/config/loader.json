@@ -1,0 +1,13 @@
+{
+    "entries": [
+        {
+            "label": "Booboot barebone",
+            "kernel": "kernel.elf",
+            "protocol": "handover",
+            "cmdline": "Booboot is cool!",
+            "modules": [
+                "booboot.tga"
+            ]
+        }
+    ]
+}

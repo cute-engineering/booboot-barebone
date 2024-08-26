@@ -1,0 +1,10 @@
+{
+    "$schema": "https://schemas.cute.engineering/stable/cutekit.manifest.component.v1",
+    "type": "exe",
+    "id": "kernel",
+    "description": "A simple kernel to demonstration Cutekit and Handover",
+    "requires": [
+        "handover",
+        "stdc-ansi"
+    ]
+}
