@@ -10,7 +10,13 @@ def _(args: model.TargetArgs):
 
     registry = model.Registry.use(args)
     component = registry.lookup("kernel", model.Component)
+    if component is None:
+        raise ValueError("Kernel not found")
+
     target = registry.lookup(target_spec, model.Target)
+    if target is None:
+        raise ValueError(f"Target not found: {target_spec}")
+
     scope = builder.TargetScope(registry, target)
 
     ck = Path(const.PROJECT_CK_DIR)
@@ -25,9 +31,8 @@ def _(args: model.TargetArgs):
         str(ck / "image" / "efi" / "boot" / "bootx64.efi"),
     )
 
-    shell.cp(
-        builder.build(scope, component)[0].path, str((ck / "image" / "kernel.elf"))
-    )
+    products = builder.build(scope, component)
+    shell.cp(str(products[0].path), str((ck / "image" / "kernel.elf")))
 
     shell.cp(
         str(meta / "res" / "booboot.tga"),
@@ -45,7 +50,7 @@ def _(args: model.TargetArgs):
         "-debugcon",
         "mon:stdio",
         "-drive",
-        f"format=raw,file=fat:rw:{ck / "image"},media=disk",
+        f"format=raw,file=fat:rw:{ck / 'image'},media=disk",
         "-bios",
         shell.wget("https://retrage.github.io/edk2-nightly/bin/RELEASEX64_OVMF.fd"),
     )
